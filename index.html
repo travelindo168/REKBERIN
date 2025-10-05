@@ -1,0 +1,287 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Jasa Rekber Produk Digital</title>
+  <style>
+    body {
+      font-family: "Poppins", sans-serif;
+      background: #eaf6ff;
+      margin: 0;
+      padding: 0;
+      color: #333;
+    }
+
+    header {
+      text-align: center;
+      background: linear-gradient(90deg, #3aa8ff, #007bff);
+      color: white;
+      padding: 20px 10px;
+      border-bottom-left-radius: 30px;
+      border-bottom-right-radius: 30px;
+    }
+
+    header h1 {
+      margin: 0;
+      font-size: 24px;
+    }
+
+    header p {
+      margin: 5px 0 0;
+      font-size: 14px;
+    }
+
+    .menu {
+      display: flex;
+      justify-content: space-around;
+      margin: 30px 0;
+      flex-wrap: wrap;
+    }
+
+    .menu button {
+      background: #007bff;
+      color: white;
+      border: none;
+      padding: 14px 25px;
+      border-radius: 15px;
+      font-size: 16px;
+      cursor: pointer;
+      box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+      transition: 0.3s;
+    }
+
+    .menu button:hover {
+      background: #005fcc;
+      transform: translateY(-2px);
+    }
+
+    /* Popup Form */
+    .popup {
+      display: none;
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background: rgba(0,0,0,0.4);
+      z-index: 10;
+      justify-content: center;
+      align-items: center;
+      overflow-y: auto;
+    }
+
+    .popup-content {
+      background: white;
+      padding: 20px;
+      border-radius: 20px;
+      width: 90%;
+      max-width: 400px;
+      box-shadow: 0 8px 16px rgba(0,0,0,0.2);
+      animation: popIn 0.3s ease;
+      position: relative;
+      margin: 30px auto;
+      overflow-y: auto;
+      max-height: 90vh;
+    }
+
+    @keyframes popIn {
+      from { transform: scale(0.8); opacity: 0; }
+      to { transform: scale(1); opacity: 1; }
+    }
+
+    label {
+      font-weight: 600;
+      font-size: 14px;
+      margin-top: 10px;
+      display: block;
+    }
+
+    .popup-content input,
+    .popup-content select {
+      width: 100%;
+      padding: 10px;
+      margin: 6px 0 12px;
+      border: 1px solid #ccc;
+      border-radius: 8px;
+      font-size: 14px;
+      background: #f8fbff;
+    }
+
+    .popup-content button {
+      background: #007bff;
+      color: white;
+      border: none;
+      padding: 12px;
+      width: 100%;
+      border-radius: 10px;
+      cursor: pointer;
+      font-size: 16px;
+      margin-top: 10px;
+      transition: 0.3s;
+    }
+
+    .popup-content button:hover {
+      background: #005fcc;
+    }
+
+    .note {
+      font-size: 12px;
+      background: #f1faff;
+      padding: 8px;
+      border-radius: 6px;
+      margin-top: -5px;
+      margin-bottom: 10px;
+      color: #007bff;
+      line-height: 1.4;
+    }
+
+    .close-btn {
+      background: #ff4d4d;
+    }
+
+    footer {
+      text-align: center;
+      font-size: 12px;
+      color: #666;
+      margin-bottom: 15px;
+    }
+  </style>
+</head>
+<body>
+
+  <header>
+    <h1>💳 Jasa Rekber Produk Digital</h1>
+    <p>Aman, Cepat, dan Terpercaya</p>
+  </header>
+
+  <div class="menu">
+    <button onclick="bukaForm('pembeli')">Saya Pembeli</button>
+    <button onclick="bukaForm('penjual')">Saya Penjual</button>
+  </div>
+
+  <!-- POPUP FORM -->
+  <div class="popup" id="formPopup">
+    <div class="popup-content">
+      <h3 id="judulForm">Form Order Rekber</h3>
+
+      <label>Nomor Pesanan</label>
+      <input type="text" id="nomorPesanan" placeholder="Masukkan 4 digit nomor pesanan">
+      <div class="note">⚠️ Masukkan nomor pesanan 4 digit dan berikan ke lawan transaksi Anda.<br>
+        Nomor pesanan harus sama agar admin mudah mengenali transaksi.</div>
+
+      <label>Nama</label>
+      <input type="text" id="nama" placeholder="Nama lengkap Anda">
+
+      <label>Jenis Produk</label>
+      <input type="text" id="jenisProduk" placeholder="Contoh: Voucher Game ML">
+
+      <label>Nilai Transaksi (Rp)</label>
+      <input type="number" id="nilaiTransaksi" placeholder="Contoh: 120000">
+
+      <label>Produk Bergaransi?</label>
+      <select id="garansi" onchange="tampilkanGaransi()">
+        <option value="Tidak">Tidak</option>
+        <option value="Ya">Ya</option>
+      </select>
+
+      <div id="garansiLama" style="display:none;">
+        <label>Lama Garansi (hari)</label>
+        <input type="number" id="lamaGaransi" placeholder="Contoh: 7">
+      </div>
+
+      <div id="metodeContainer"></div>
+
+      <label>Fee Rekber ditanggung oleh:</label>
+      <select id="feeOleh" onchange="tampilkanFee()">
+        <option value="Tidak Saya">Bukan Saya</option>
+        <option value="Saya">Saya yang Menanggung</option>
+      </select>
+
+      <div id="feeJumlahContainer" style="display:none;">
+        <label>Jumlah Fee Rekber (Rp)</label>
+        <input type="number" id="feeJumlah" placeholder="Contoh: 5000">
+      </div>
+
+      <button onclick="kirimWhatsApp()">Kirim Pesanan ke Admin</button>
+      <button class="close-btn" onclick="tutupForm()">Tutup</button>
+    </div>
+  </div>
+
+  <footer>
+    © 2025 Rekberin. All rights reserved.
+  </footer>
+
+  <script>
+    const adminNumber = "6281262433533";
+    let role = "";
+
+    function bukaForm(tipe) {
+      role = tipe;
+      const popup = document.getElementById('formPopup');
+      popup.style.display = 'flex';
+      document.body.style.overflow = 'hidden'; // Cegah scroll di background
+
+      document.getElementById('judulForm').textContent =
+        tipe === 'pembeli' ? 'Form Pembeli - Order Rekber' : 'Form Penjual - Order Rekber';
+
+      const metodeHTML = tipe === 'pembeli'
+        ? `<label>Metode Bayar</label>
+           <select id="metodeBayar">
+             <option value="Qris">QRIS</option>
+           </select>`
+        : `<label>Rekening / E-Wallet Pencairan</label>
+           <input type="text" id="metodeBayar" placeholder="Masukkan No Rekening / E-Wallet">`;
+
+      document.getElementById('metodeContainer').innerHTML = metodeHTML;
+    }
+
+    function tutupForm() {
+      document.getElementById('formPopup').style.display = 'none';
+      document.body.style.overflow = 'auto';
+    }
+
+    function tampilkanGaransi() {
+      const garansi = document.getElementById('garansi').value;
+      document.getElementById('garansiLama').style.display = garansi === 'Ya' ? 'block' : 'none';
+    }
+
+    function tampilkanFee() {
+      const feeOleh = document.getElementById('feeOleh').value;
+      document.getElementById('feeJumlahContainer').style.display = feeOleh === 'Saya' ? 'block' : 'none';
+    }
+
+    function kirimWhatsApp() {
+      const nomorPesanan = document.getElementById("nomorPesanan").value.trim();
+      const nama = document.getElementById("nama").value.trim();
+      const jenisProduk = document.getElementById("jenisProduk").value.trim();
+      const nilaiTransaksi = document.getElementById("nilaiTransaksi").value.trim();
+      const garansi = document.getElementById("garansi").value;
+      const lamaGaransi = document.getElementById("lamaGaransi").value.trim();
+      const metodeBayar = document.getElementById("metodeBayar").value.trim();
+      const feeOleh = document.getElementById("feeOleh").value;
+      const feeJumlah = document.getElementById("feeJumlah").value.trim();
+
+      if (!nomorPesanan || !nama || !jenisProduk || !nilaiTransaksi) {
+        alert("⚠️ Harap isi semua data penting sebelum mengirim!");
+        return;
+      }
+
+      const pesan =
+        `📦 *Form Order Jasa Rekber (${role.toUpperCase()})*\n\n` +
+        `🧾 Nomor Pesanan: ${nomorPesanan}\n` +
+        `👤 Nama: ${nama}\n` +
+        `💻 Produk: ${jenisProduk}\n` +
+        `💰 Nilai Transaksi: Rp${nilaiTransaksi}\n` +
+        `🛡️ Produk Bergaransi: ${garansi}${garansi === "Ya" ? ` (${lamaGaransi} hari)` : ""}\n` +
+        `${role === "pembeli" ? `💳 Metode Bayar: ${metodeBayar}` : `🏦 Rekening/E-Wallet: ${metodeBayar}`}\n\n` +
+        `💸 Fee Rekber: ${feeOleh}${feeOleh === "Saya" ? ` (Rp${feeJumlah})` : ""}\n\n` +
+        `Mohon dibuatkan grup rekber untuk transaksi ini.`;
+
+      const url = `https://wa.me/${adminNumber}?text=${encodeURIComponent(pesan)}`;
+      window.open(url, "_blank");
+    }
+  </script>
+
+</body>
+</html>
